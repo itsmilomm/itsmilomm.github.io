@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greenlens</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>🌱 Greenlens</h1>
+            <p>Tu asistente de reciclaje inteligente</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('scan')">📸 Escanear</button>
+            <button class="nav-tab" onclick="showTab('history')">🕓 Historial</button>
+            <button class="nav-tab" onclick="showTab('education')">🧠 Educación</button>
+            <button class="nav-tab" onclick="showTab('settings')">⚙️ Config</button>
+        </div>
+
+        <div class="content">
+            <!-- Tab Escanear -->
+            <div id="scan" class="tab-content active">
+                <div class="camera-section">
+                    <div class="camera-container">
+                        <video id="camera" autoplay playsinline></video>
+                        <div class="camera-overlay"></div>
+                    </div>
+                    <div class="no-camera hidden">
+                        <span>📷</span>
+                        <p>Cámara no disponible en este entorno</p>
+                        <small>Usa la búsqueda manual abajo</small>
+                    </div>
+                    <button class="btn" onclick="captureImage()">📸 Escanear Producto</button>
+                    <button class="btn btn-secondary" onclick="toggleCamera()">🔄 Cambiar Cámara</button>
+                </div>
+
+                <div class="manual-input">
+                    <h3>🔍 Búsqueda Manual</h3>
+                    <div class="input-group">
+                        <label>Nombre del producto:</label>
+                        <input type="text" id="productName" placeholder="Ej: Botella de plástico">
+                    </div>
+                    <div class="input-group">
+                        <label>Código de barras (opcional):</label>
+                        <input type="text" id="barcode" placeholder="Ej: 123456789">
+                    </div>
+                    <button class="btn" onclick="searchManually()">🔍 Buscar</button>
+                </div>
+
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Analizando producto...</p>
+                </div>
+
+                <div id="results"></div>
+            </div>
+
+            <!-- Tab Historial -->
+            <div id="history" class="tab-content">
+                <h2>🕓 Historial de Escaneos</h2>
+                <div id="historyList">
+                    <p style="text-align: center; color: #7f8c8d; padding: 20px;">
+                        No hay elementos en el historial aún.<br>
+                        ¡Escanea tu primer producto!
+                    </p>
+                </div>
+                <button class="btn btn-danger" onclick="clearHistory()" style="width: 100%; margin-top: 20px;">
+                    🗑️ Limpiar Historial
+                </button>
+            </div>
+
+            <!-- Tab Educación -->
+            <div id="education" class="tab-content">
+                <h2>🧠 Educación Ambiental</h2>
+                
+                <div class="tip-card">
+                    <h4>♻️ Regla de las 3 R's</h4>
+                    <p><strong>Reducir:</strong> Consume menos productos desechables</p>
+                    <p><strong>Reutilizar:</strong> Dale una segunda vida a los objetos</p>
+                    <p><strong>Reciclar:</strong> Separa correctamente los residuos</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>🗂️ Separación de Residuos</h4>
+                    <p><strong>Azul:</strong> Papel y cartón</p>
+                    <p><strong>Amarillo:</strong> Plásticos y latas</p>
+                    <p><strong>Verde:</strong> Vidrio</p>
+                    <p><strong>Marrón:</strong> Orgánicos</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>🌍 Impacto Ambiental</h4>
+                    <p>Una botella de plástico tarda hasta 450 años en descomponerse. ¡Reciclar una tonelada de plástico ahorra 2000 litros de petróleo!</p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>💡 Consejos Diarios</h4>
+                    <p>• Lleva bolsas reutilizables al supermercado</p>
+                    <p>• Usa botellas de agua reutilizables</p>
+                    <p>• Compra productos con menos empaques</p>
+                    <p>• Repara antes de desechar</p>
+                </div>
+            </div>
+
+            <!-- Tab Configuración -->
+            <div id="settings" class="tab-content">
+                <h2>⚙️ Configuración</h2>
+                
+                <div class="settings-section">
+                    <h3>🌐 Idioma</h3>
+                    <div class="language-selector">
+                        <button class="lang-btn active" onclick="setLanguage('es')">🇪🇸 Español</button>
+                        <button class="lang-btn" onclick="setLanguage('en')">🇺🇸 English</button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🔧 Permisos</h3>
+                    <div class="setting-item">
+                        <span>Acceso a cámara</span>
+                        <div class="toggle active" onclick="toggleSetting(this)"></div>
+                    </div>
+                    <div class="setting-item">
+                        <span>Notificaciones</span>
+                        <div class="toggle" onclick="toggleSetting(this)"></div>
+                    </div>
+                    <div class="setting-item">
+                        <span>Guardar historial</span>
+                        <div class="toggle active" onclick="toggleSetting(this)"></div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>❓ Ayuda y Contacto</h3>
+                    <button class="btn" style="width: 100%; margin-bottom: 10px;" onclick="showHelp()">
+                        📖 Guía de Uso
+                    </button>
+                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;" onclick="showContact()">
+                        📧 Contactar Soporte
+                    </button>
+                    <button class="btn" style="width: 100%;" onclick="showAbout()">
+                        ℹ️ Acerca de Greenlens
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
